@@ -64,8 +64,10 @@
     
     [self.delegate ls_willRotateToOrientation:self.currentOrientation];
     BOOL isFullscreen = size.width > size.height;
-    [CATransaction begin];
-    [CATransaction setDisableActions:self.disableAnimations];
+    if (self.disableAnimations) {
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+    }
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
         if (isFullscreen) {
             self.contentView.frame = CGRectMake(0, 0, size.width, size.height);
@@ -74,7 +76,9 @@
         }
         [self.contentView layoutIfNeeded];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
-        [CATransaction commit];
+        if (self.disableAnimations) {
+            [CATransaction commit];
+        }
         [self.delegate ls_didRotateFromOrientation:self.currentOrientation];
         if (!isFullscreen) {
             self.contentView.frame = self.containerView.bounds;
