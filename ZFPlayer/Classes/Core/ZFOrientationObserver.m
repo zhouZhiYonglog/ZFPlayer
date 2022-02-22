@@ -102,6 +102,8 @@
 /// Force Rotaion, default NO.
 @property (nonatomic, assign) BOOL forceRotaion;
 
+@property (nonatomic, strong) UIView *snapshot;
+
 @end
 
 @implementation ZFOrientationObserver
@@ -284,7 +286,7 @@
 }
 
 - (void)enterFullScreen:(BOOL)fullScreen animated:(BOOL)animated {
-    [self enterFullScreen:fullScreen animated:animated];
+    [self enterFullScreen:fullScreen animated:animated completion:nil];
 }
 
 - (void)enterFullScreen:(BOOL)fullScreen animated:(BOOL)animated completion:(void (^ _Nullable)(void))completion {
@@ -349,12 +351,22 @@
         } else {
             containerView = self.containerView;
         }
-        UIView *snapshot = [self.view snapshotViewAfterScreenUpdates:NO];
-        snapshot.frame = containerView.bounds;
-        [containerView addSubview:snapshot];
         [self performSelector:@selector(_contentViewAdd:) onThread:NSThread.mainThread withObject:containerView waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
-        [self performSelector:@selector(_makeKeyAndVisible:) onThread:NSThread.mainThread withObject:snapshot waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
+        [self performSelector:@selector(_makeKeyAndVisible:) onThread:NSThread.mainThread withObject:self.snapshot waitUntilDone:NO modes:@[NSDefaultRunLoopMode]];
     }
+}
+
+/// 截屏
+- (void)snapshotPlayerView {
+    UIView *containerView = nil;
+    if (self.rotateType == ZFRotateTypeCell) {
+        containerView = [self.cell viewWithTag:self.playerViewTag];
+    } else {
+        containerView = self.containerView;
+    }
+    self.snapshot = [self.view.playerView snapshotViewAfterScreenUpdates:NO];
+    self.snapshot.frame = containerView.bounds;
+    [containerView addSubview:self.snapshot];
 }
 
 - (void)_contentViewAdd:(UIView *)containerView {
@@ -364,7 +376,7 @@
 }
 
 - (void)_makeKeyAndVisible:(UIView *)snapshot {
-    [snapshot removeFromSuperview];
+    if (snapshot) { [snapshot removeFromSuperview]; }
     UIWindow *previousKeyWindow = self.previousKeyWindow ?: UIApplication.sharedApplication.windows.firstObject;
     [previousKeyWindow makeKeyAndVisible];
     self.previousKeyWindow = nil;
@@ -399,6 +411,10 @@
 - (void)ls_willRotateToOrientation:(UIInterfaceOrientation)orientation {
     self.fullScreen = UIInterfaceOrientationIsLandscape(orientation);
     if (self.orientationWillChange) self.orientationWillChange(self, self.isFullScreen);
+    // 截屏
+    if (!self.isFullScreen) {
+        [self snapshotPlayerView];
+    }
 }
 
 - (void)ls_didRotateFromOrientation:(UIInterfaceOrientation)orientation {
