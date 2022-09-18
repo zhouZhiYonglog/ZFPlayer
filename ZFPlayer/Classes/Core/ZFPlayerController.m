@@ -434,7 +434,7 @@ static NSMutableDictionary <NSString* ,NSNumber *> *_zfPlayRecords;
     self.currentPlayerManager = playerManager;
 }
 
-//// Add video to the cell
+/// Add video to the cell
 - (void)addPlayerViewToCell {
     self.isSmallFloatViewShow = NO;
     self.smallFloatView.hidden = YES;
@@ -443,10 +443,10 @@ static NSMutableDictionary <NSString* ,NSNumber *> *_zfPlayRecords;
     [self.containerView addSubview:self.currentPlayerManager.view];
     self.currentPlayerManager.view.frame = self.containerView.bounds;
     self.currentPlayerManager.view.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-    [self.orientationObserver updateRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
     if ([self.controlView respondsToSelector:@selector(videoPlayer:floatViewShow:)]) {
         [self.controlView videoPlayer:self floatViewShow:NO];
     }
+    [self layoutPlayerSubViews];
 }
 
 //// Add video to the container view
@@ -816,10 +816,6 @@ static NSMutableDictionary <NSString* ,NSNumber *> *_zfPlayRecords;
     return YES;
 }
 
-- (UIInterfaceOrientation)currentOrientation {
-    return self.orientationObserver.currentOrientation;
-}
-
 - (BOOL)isStatusBarHidden {
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
@@ -1142,7 +1138,6 @@ static NSMutableDictionary <NSString* ,NSNumber *> *_zfPlayRecords;
         
         UIView *cell = [self.scrollView zf_getCellForIndexPath:playingIndexPath];
         self.containerView = [cell viewWithTag:self.containerViewTag];
-        [self.orientationObserver updateRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
         [self addDeviceOrientationObserver];
         self.scrollView.zf_playingIndexPath = playingIndexPath;
         [self layoutPlayerSubViews];
@@ -1372,7 +1367,6 @@ static NSMutableDictionary <NSString* ,NSNumber *> *_zfPlayRecords;
     if (self.currentPlayerManager.view && self.playingIndexPath && self.containerViewTag) {
         UIView *cell = [self.scrollView zf_getCellForIndexPath:self.playingIndexPath];
         self.containerView = [cell viewWithTag:self.containerViewTag];
-        [self.orientationObserver updateRotateView:self.currentPlayerManager.view rotateViewAtCell:cell playerViewTag:self.containerViewTag];
         [self layoutPlayerSubViews];
     }
 }

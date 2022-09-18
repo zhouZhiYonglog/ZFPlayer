@@ -49,7 +49,6 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
     @zf_weakify(self)
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @zf_strongify(self)
-        kAPPDelegate.allowOrentitaionRotation = isFullScreen;
         if (isFullScreen) {
             self.player.disablePanMovingDirection = ZFPlayerDisablePanMovingDirectionNone;
         } else {

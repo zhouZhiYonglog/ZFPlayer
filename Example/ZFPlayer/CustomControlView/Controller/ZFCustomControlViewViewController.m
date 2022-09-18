@@ -41,10 +41,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.player.pauseWhenAppResignActive = NO;
     
     @zf_weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        kAPPDelegate.allowOrentitaionRotation = isFullScreen;
-    };
-    
     /// 播放完成
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @zf_strongify(self)

@@ -26,7 +26,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    kAPPDelegate.allowOrentitaionRotation = YES;
     @zf_weakify(self)
     self.controlView.backBtnClickCallback = ^{
         @zf_strongify(self)
@@ -47,7 +46,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    kAPPDelegate.allowOrentitaionRotation = NO;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {

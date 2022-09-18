@@ -54,10 +54,6 @@ static NSString *kDouYinIdentifier = @"douYinIdentifier";
         [self.player stopCurrentPlayingCell];
     };
     
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        kAPPDelegate.allowOrentitaionRotation = isFullScreen;
-    };
-    
     /// 停止的时候找出最合适的播放(只能找到设置了tag值cell)
     self.player.zf_scrollViewDidEndScrollingCallback = ^(NSIndexPath * _Nonnull indexPath) {
         @zf_strongify(self)

@@ -43,10 +43,6 @@ static NSString * const reuseIdentifier = @"collectionViewCell";
     self.player.shouldAutoPlay = YES;
     
     @zf_weakify(self)
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        kAPPDelegate.allowOrentitaionRotation = isFullScreen;
-    };
-    
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @zf_strongify(self)
         if (self.player.playingIndexPath.row < self.dataSource.count - 1) {

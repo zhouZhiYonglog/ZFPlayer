@@ -65,7 +65,6 @@ static NSString *kIdentifier = @"kIdentifier";
     };
 
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        kAPPDelegate.allowOrentitaionRotation = isFullScreen;
         @zf_strongify(self)
         self.player.controlView.hidden = YES;
     };
@@ -176,6 +175,10 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (BOOL)prefersStatusBarHidden {
     return NO;
+}
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - UIScrollViewDelegate  列表播放必须实现

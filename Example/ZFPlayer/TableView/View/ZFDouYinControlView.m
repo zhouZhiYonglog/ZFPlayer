@@ -75,6 +75,8 @@
     self.sliderView.value = videoPlayer.progress;
 }
 
+- (void)videoPlayer:(ZFPlayerController *)videoPlayer bufferTime:(NSTimeInterval)bufferTime {}
+
 - (void)gestureSingleTapped:(ZFPlayerGestureControl *)gestureControl {
     if (self.player.currentPlayerManager.isPlaying) {
         [self.player.currentPlayerManager pause];

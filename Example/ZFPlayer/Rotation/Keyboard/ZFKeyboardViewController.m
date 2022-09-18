@@ -37,7 +37,6 @@
     self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
         @zf_strongify(self)
         [self.textField resignFirstResponder];
-        kAPPDelegate.allowOrentitaionRotation = isFullScreen;
     };
     
     self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {

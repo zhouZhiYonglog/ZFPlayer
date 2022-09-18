@@ -300,10 +300,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Lock the screen orientation.
 @property (nonatomic, getter=isLockedScreen) BOOL lockedScreen;
 
-/// The current orientation of the player.
-/// Default is UIInterfaceOrientationPortrait.
-@property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
-
 /// The block invoked When player will rotate.
 @property (nonatomic, copy, nullable) void(^orientationWillChange)(ZFPlayerController *player, BOOL isFullScreen);
 

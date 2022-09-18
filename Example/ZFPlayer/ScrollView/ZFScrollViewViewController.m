@@ -54,10 +54,6 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     CGFloat x = ZFPlayer_ScreenWidth - w - margin;
     CGFloat y = ZFPlayer_ScreenHeight - h - margin;
     self.player.smallFloatView.frame = CGRectMake(x, y, w, h);
-    
-    self.player.orientationWillChange = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        kAPPDelegate.allowOrentitaionRotation = isFullScreen;
-    };
     self.scrollView.contentSize = CGSizeMake(self.view.bounds.size.width, 3000);
 }
 
