@@ -114,14 +114,14 @@
     return self.supportInterfaceOrientation & ZFInterfaceOrientationMaskLandscapeRight;
 }
 
-+ (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window {
++ (ZFInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window {
     if ([window isKindOfClass:ZFLandscapeWindow.class]) {
         ZFLandscapeRotationManager *manager = ((ZFLandscapeWindow *)window).rotationManager;
         if (manager != nil) {
-            return [manager supportedInterfaceOrientationsForWindow:window];
+            return (ZFInterfaceOrientationMask)[manager supportedInterfaceOrientationsForWindow:window];
         }
     }
-    return UIInterfaceOrientationMaskPortrait;
+    return ZFInterfaceOrientationMaskUnknow;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window {

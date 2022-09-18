@@ -17,7 +17,12 @@
 
 /// 在这里写支持的旋转方向，为了防止横屏方向，应用启动时候界面变为横屏模式
 - (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    return [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
+    ZFInterfaceOrientationMask orientationMask = [ZFLandscapeRotationManager supportedInterfaceOrientationsForWindow:window];
+    if (orientationMask != ZFInterfaceOrientationMaskUnknow) {
+        return (UIInterfaceOrientationMask)orientationMask;
+    }
+    /// 这里是非播放器VC支持的方向
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {

@@ -50,6 +50,7 @@ typedef NS_ENUM(NSUInteger, ZFRotateType) {
  Rotation of support direction
  */
 typedef NS_OPTIONS(NSUInteger, ZFInterfaceOrientationMask) {
+    ZFInterfaceOrientationMaskUnknow = 0,
     ZFInterfaceOrientationMaskPortrait = (1 << 0),
     ZFInterfaceOrientationMaskLandscapeLeft = (1 << 1),
     ZFInterfaceOrientationMaskLandscapeRight = (1 << 2),
