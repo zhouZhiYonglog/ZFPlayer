@@ -1,0 +1,1 @@
+../../../../../ZFPlayer/Classes/Core/ZFLandscapeRotationManager.h

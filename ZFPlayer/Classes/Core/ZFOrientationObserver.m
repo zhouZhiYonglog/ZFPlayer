@@ -228,11 +228,13 @@
 
 - (ZFLandscapeRotationManager *)landscapeRotationManager {
     if (!_landscapeRotationManager) {
+        if (@available(iOS 16.0, *)) {
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 160000
-        _landscapeRotationManager = [[ZFLandscapeRotationManager_iOS16 alloc] init];
-#else
-        _landscapeRotationManager = [[ZFLandscapeRotationManager_iOS15 alloc] init];
+            _landscapeRotationManager = [[ZFLandscapeRotationManager_iOS16 alloc] init];
 #endif
+        } else {
+            _landscapeRotationManager = [[ZFLandscapeRotationManager_iOS15 alloc] init];
+        }
         @zf_weakify(self)
         _landscapeRotationManager.orientationWillChange = ^(UIInterfaceOrientation orientation) {
             @zf_strongify(self)
