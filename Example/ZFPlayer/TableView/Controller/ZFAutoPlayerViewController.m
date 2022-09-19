@@ -55,12 +55,7 @@ static NSString *kIdentifier = @"kIdentifier";
     @zf_weakify(self)
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {
         @zf_strongify(self)
-        if (self.player.playingIndexPath.row < self.dataSource.count - 1) {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:self.player.playingIndexPath.row+1 inSection:0];
-            [self playTheVideoAtIndexPath:indexPath scrollAnimated:YES];
-        } else {
-            [self.player stopCurrentPlayingCell];
-        }
+        [self.player stopCurrentPlayingCell];
     };
     
     /// 停止的时候找出最合适的播放

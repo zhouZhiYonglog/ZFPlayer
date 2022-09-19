@@ -2,6 +2,9 @@
 //  ZFFullScreenViewController.m
 //  ZFPlayer
 //
+//  ZFFullscreenViewController.m
+//  ZFPlayer
+//
 // Copyright (c) 2020年 任子丰 ( http://github.com/renzifeng )
 //
 // Permission is hereby granted, free of charge, to any person obtaining a copy

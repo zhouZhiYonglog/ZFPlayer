@@ -92,26 +92,19 @@ UIView<ZFPlayerMediaControl> *controlView = ...;
 player.controlView = controlView;
 ```
 
-
 ## 📷 Screenshots
 
 ![Picture effect](https://upload-images.jianshu.io/upload_images/635942-1b0e23b7f5eabd9e.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
+## Reference
+- [ijkplayer](https://github.com/Bilibili/ijkplayer)
+- [SJVideoPlayer](https://github.com/changsanjiang/SJVideoPlayer)
 
 ## 👨🏻‍💻 Author
 
 - Weibo: [@任子丰](https://weibo.com/zifeng1300)
 - Email: zifeng1300@gmail.com
 - QQ群: 123449304
-
-![](https://upload-images.jianshu.io/upload_images/635942-a9fbbb2710de8eff.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-
-
-## 🙋🏻‍♂️🙋🏻‍♀️寻求志同道合的小伙伴
-
-- 现寻求志同道合的小伙伴一起维护此框架，有兴趣的小伙伴可以[发邮件](zifeng1300@gmail.com)给我，非常感谢！
-- 如果一切OK，我将开放框架维护权限（github、pod等）
-
 
 
 ## 👮🏻 License
