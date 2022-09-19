@@ -128,10 +128,7 @@
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    if (window == self.window) {
-        return 1 << self.currentOrientation;
-    }
-    return UIInterfaceOrientationMaskPortrait;
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 @end
