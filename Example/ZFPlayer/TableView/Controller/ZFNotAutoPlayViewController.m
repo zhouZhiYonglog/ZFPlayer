@@ -65,9 +65,7 @@ static NSString *kIdentifier = @"kIdentifier";
 
 - (void)viewWillLayoutSubviews {
     [super viewWillLayoutSubviews];
-    CGFloat y = CGRectGetMaxY(self.navigationController.navigationBar.frame);
-    CGFloat h = CGRectGetMaxY(self.view.frame);
-    self.tableView.frame = CGRectMake(0, y, self.view.frame.size.width, h-y);
+    self.tableView.frame = self.view.bounds;
 }
 
 - (void)requestData {
@@ -194,11 +192,6 @@ static NSString *kIdentifier = @"kIdentifier";
         [_tableView registerClass:[ZFTableViewCell class] forCellReuseIdentifier:kIdentifier];
         _tableView.delegate = self;
         _tableView.dataSource = self;
-        if (@available(iOS 11.0, *)) {
-            _tableView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-        } else {
-            self.automaticallyAdjustsScrollViewInsets = NO;
-        }
         _tableView.estimatedRowHeight = 0;
         _tableView.estimatedSectionFooterHeight = 0;
         _tableView.estimatedSectionHeaderHeight = 0;

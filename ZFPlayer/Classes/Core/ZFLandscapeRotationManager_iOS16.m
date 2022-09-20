@@ -55,7 +55,7 @@
     CGFloat minSize = MIN(screenBounds.size.width, screenBounds.size.height);
   
     self.contentView.autoresizingMask = UIViewAutoresizingNone;
-    if (fromOrientation == UIInterfaceOrientationPortrait) {
+    if (fromOrientation == UIInterfaceOrientationPortrait || self.contentView.superview != self.landscapeViewController.view) {
         self.contentView.frame = sourceFrame;
         [sourceWindow addSubview:self.contentView];
         [self.contentView layoutIfNeeded];
@@ -79,7 +79,7 @@
     
     if (UIInterfaceOrientationIsLandscape(toOrientation)) {
         rotationBounds = CGRectMake(0, 0, maxSize, minSize);
-        rotationCenter = fromOrientation == UIInterfaceOrientationPortrait ? CGPointMake(minSize * 0.5,  maxSize * 0.5): CGPointMake(maxSize * 0.5, minSize * 0.5);
+        rotationCenter = (fromOrientation == UIInterfaceOrientationPortrait || self.contentView.superview != self.landscapeViewController.view) ? CGPointMake(minSize * 0.5,  maxSize * 0.5): CGPointMake(maxSize * 0.5, minSize * 0.5);
     }
     
     // transform

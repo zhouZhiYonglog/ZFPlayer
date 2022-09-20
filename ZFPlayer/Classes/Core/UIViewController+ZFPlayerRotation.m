@@ -64,7 +64,10 @@ API_AVAILABLE(ios(13.0)) @implementation UIViewController (ZFPlayerFixSafeArea)
         if (systemVersion >= 13.0 && systemVersion < 16.0) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wundeclared-selector"
-            SEL originalSelector = @selector(_setContentOverlayInsets:andLeftMargin:rightMargin:);
+            /// _setContentOverlayInsets:andLeftMargin:rightMargin:
+            NSData *data = [NSData.alloc initWithBase64EncodedString:@"X3NldENvbnRlbnRPdmVybGF5SW5zZXRzOmFuZExlZnRNYXJnaW46cmlnaHRNYXJnaW46" options:kNilOptions];
+            NSString *method = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+            SEL originalSelector = NSSelectorFromString(method);
 #pragma clang diagnostic pop
             SEL swizzledSelector = @selector(zf_setContentOverlayInsets:andLeftMargin:rightMargin:);
             

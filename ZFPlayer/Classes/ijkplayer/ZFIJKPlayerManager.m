@@ -450,7 +450,7 @@
 
 - (void)setVolume:(float)volume {
     _volume = MIN(MAX(0, volume), 1);
-    self.player.playbackVolume = volume;
+    self.player.playbackVolume = _volume;
 }
 
 @end
