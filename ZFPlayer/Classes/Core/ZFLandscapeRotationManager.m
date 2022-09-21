@@ -36,8 +36,6 @@
 - (instancetype)init {
     self = [super init];
     if (self) {
-        _supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
-        _allowOrientationRotation = YES;
         _currentOrientation = UIInterfaceOrientationPortrait;
     }
     return self;
@@ -60,7 +58,7 @@
 }
 
 - (void)handleDeviceOrientationChange {
-    if (!self.allowOrientationRotation) return;
+    if (!self.allowOrientationRotation || self.isLockedScreen) return;
     if (!UIDeviceOrientationIsValidInterfaceOrientation([UIDevice currentDevice].orientation)) {
         return;
     }

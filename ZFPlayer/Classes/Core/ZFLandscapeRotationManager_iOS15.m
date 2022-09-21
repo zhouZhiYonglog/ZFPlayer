@@ -77,7 +77,7 @@
 #pragma mark - ZFLandscapeViewControllerDelegate
 
 - (BOOL)ls_shouldAutorotate {
-    if (self.allowOrientationRotation || self.forceRotaion) {
+    if ((self.allowOrientationRotation && !self.isLockedScreen) || self.forceRotaion) {
         [self rotationBegin];
         return YES;
     }

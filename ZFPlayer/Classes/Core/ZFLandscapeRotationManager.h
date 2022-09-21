@@ -46,6 +46,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// default is YES.
 @property (nonatomic, assign) BOOL allowOrientationRotation;
 
+/// Lock screen orientation
+@property (nonatomic, getter=isLockedScreen) BOOL lockedScreen;
+
 @property (nonatomic, assign) BOOL disableAnimations;
 
 /// The support Interface Orientation,default is ZFInterfaceOrientationMaskAllButUpsideDown

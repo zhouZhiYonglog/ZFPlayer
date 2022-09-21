@@ -42,7 +42,7 @@
 
 @implementation UIWindow (CurrentViewController)
 
-+ (UIViewController*)zf_currentViewController; {
++ (UIViewController*)zf_currentViewController {
     __block UIWindow *window;
     if (@available(iOS 13, *)) {
         [[UIApplication sharedApplication].connectedScenes enumerateObjectsUsingBlock:^(UIScene * _Nonnull scene, BOOL * _Nonnull scenesStop) {
@@ -98,10 +98,10 @@
     if (self) {
         _duration = 0.30;
         _fullScreenMode = ZFFullScreenModeLandscape;
-        _supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
-        _allowOrientationRotation = YES;
         _portraitFullScreenMode = ZFPortraitFullScreenModeScaleToFill;
         _disablePortraitGestureTypes = ZFDisablePortraitGestureTypesAll;
+        self.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
+        self.allowOrientationRotation = YES;
     }
     return self;
 }
@@ -264,7 +264,7 @@
 
 - (void)setLockedScreen:(BOOL)lockedScreen {
     _lockedScreen = lockedScreen;
-    self.landscapeRotationManager.allowOrientationRotation = !lockedScreen;
+    self.landscapeRotationManager.lockedScreen = lockedScreen;
     if (lockedScreen) {
         [self removeDeviceOrientationObserver];
     } else {
@@ -345,7 +345,7 @@
 
 - (void)setAllowOrientationRotation:(BOOL)allowOrientationRotation {
     _allowOrientationRotation = allowOrientationRotation;
-    self.lockedScreen = !allowOrientationRotation;
+    self.landscapeRotationManager.allowOrientationRotation = allowOrientationRotation;
 }
 
 - (void)setSupportInterfaceOrientation:(ZFInterfaceOrientationMask)supportInterfaceOrientation {
