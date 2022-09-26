@@ -25,8 +25,10 @@
 #import "ZFLandscapeRotationManager_iOS15.h"
 #import "ZFLandscapeViewController_iOS15.h"
 
-@interface ZFLandscapeRotationManager_iOS15 ()
-@property (nonatomic, copy) void(^rotateCompleted)(void);
+@interface ZFLandscapeRotationManager_iOS15 () {
+    void(^_rotateCompleted)(void);
+}
+
 @property (nonatomic, strong, readonly) ZFLandscapeViewController_iOS15 *landscapeViewController;
 /// Force Rotaion, default NO.
 @property (nonatomic, assign) BOOL forceRotaion;
@@ -45,7 +47,7 @@
 
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation completion:(void(^ __nullable)(void))completion {
     [super interfaceOrientation:orientation completion:completion];
-    self.rotateCompleted = completion;
+    _rotateCompleted = completion;
     self.forceRotaion = YES;
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
         SEL selector = NSSelectorFromString(@"setOrientation:");
@@ -72,12 +74,30 @@
         self.window.hidden = YES;
         [self.containerView.window makeKeyAndVisible];
     }
+    self.disableAnimations = NO;
+    if (_rotateCompleted) {
+        _rotateCompleted();
+        _rotateCompleted = nil;
+    }
+}
+
+- (BOOL)allowsRotation {
+    if (UIDeviceOrientationIsValidInterfaceOrientation([UIDevice currentDevice].orientation)) {
+        UIInterfaceOrientation toOrientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
+        if (![self isSuppprtInterfaceOrientation:toOrientation]) {
+            return NO;
+        }
+    }
+    if (!self.activeDeviceObserver) { return NO; }
+    if (self.allowOrientationRotation && !self.isLockedScreen) { return YES; }
+    if (self.forceRotaion) { return YES; }
+    return NO;
 }
 
 #pragma mark - ZFLandscapeViewControllerDelegate
 
 - (BOOL)ls_shouldAutorotate {
-    if ((self.allowOrientationRotation && !self.isLockedScreen) || self.forceRotaion) {
+    if ([self allowsRotation]) {
         [self rotationBegin];
         return YES;
     }
@@ -86,6 +106,7 @@
 
 - (void)rotationFullscreenViewController:(ZFLandscapeViewController *)viewController viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id<UIViewControllerTransitionCoordinator>)coordinator {
     UIInterfaceOrientation toOrientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
+    if (![self isSuppprtInterfaceOrientation:toOrientation]) { return; }
     self.currentOrientation = toOrientation;
     UIView *playerSuperview = self.landscapeViewController.playerSuperview;
     if (UIInterfaceOrientationIsLandscape(toOrientation) && self.contentView.superview != playerSuperview) {
@@ -102,7 +123,9 @@
         [CATransaction begin];
         [CATransaction setDisableActions:YES];
     }
+    @zf_weakify(self)
     [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
+        @zf_strongify(self)
         if (UIInterfaceOrientationIsLandscape(toOrientation)) {
             playerSuperview.frame = CGRectMake(0, 0, size.width, size.height);
         } else {
@@ -110,6 +133,7 @@
         }
         [self.contentView layoutIfNeeded];
     } completion:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
+        @zf_strongify(self)
         if (self.disableAnimations) {
             [CATransaction commit];
         }
@@ -124,7 +148,6 @@
         [self.contentView layoutIfNeeded];
         [self rotationEnd];
         if (self.orientationDidChanged) self.orientationDidChanged(toOrientation);
-        if (self.rotateCompleted) self.rotateCompleted();
     }];
 }
 

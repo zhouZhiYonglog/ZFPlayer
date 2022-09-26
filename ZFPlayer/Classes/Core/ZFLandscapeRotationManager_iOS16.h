@@ -23,7 +23,6 @@
 // THE SOFTWARE.
 
 #import "ZFLandscapeRotationManager.h"
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 160000
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,4 +31,3 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
-#endif

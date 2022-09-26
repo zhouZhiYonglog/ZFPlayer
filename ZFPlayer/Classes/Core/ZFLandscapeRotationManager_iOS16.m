@@ -24,8 +24,6 @@
 
 #import "ZFLandscapeRotationManager_iOS16.h"
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 160000
-
 @implementation ZFLandscapeRotationManager_iOS16
 @synthesize landscapeViewController = _landscapeViewController;
 
@@ -38,8 +36,13 @@
 
 - (void)setNeedsUpdateOfSupportedInterfaceOrientations {
     if (@available(iOS 16.0, *)) {
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 160000
         [UIApplication.sharedApplication.keyWindow.rootViewController setNeedsUpdateOfSupportedInterfaceOrientations];
         [self.window.rootViewController setNeedsUpdateOfSupportedInterfaceOrientations];
+#else
+        [(id)UIApplication.sharedApplication.keyWindow.rootViewController setNeedsUpdateOfSupportedInterfaceOrientations];
+        [(id)self.window.rootViewController setNeedsUpdateOfSupportedInterfaceOrientations];
+#endif
     }
 }
 
@@ -142,4 +145,3 @@
 }
 
 @end
-#endif

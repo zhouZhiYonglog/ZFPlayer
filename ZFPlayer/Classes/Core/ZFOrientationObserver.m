@@ -88,6 +88,9 @@
 
 @property (nonatomic, strong) ZFLandscapeRotationManager *landscapeRotationManager;
 
+/// current device orientation observer is activie.
+@property (nonatomic, assign) BOOL activeDeviceObserver;
+
 @end
 
 @implementation ZFOrientationObserver
@@ -102,6 +105,7 @@
         _disablePortraitGestureTypes = ZFDisablePortraitGestureTypesAll;
         self.supportInterfaceOrientation = ZFInterfaceOrientationMaskAllButUpsideDown;
         self.allowOrientationRotation = YES;
+        self.activeDeviceObserver = YES;
     }
     return self;
 }
@@ -120,6 +124,7 @@
 
 - (void)addDeviceOrientationObserver {
     if (self.allowOrientationRotation) {
+        self.activeDeviceObserver = YES;
         if (![UIDevice currentDevice].generatesDeviceOrientationNotifications) {
             [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
         }
@@ -128,6 +133,7 @@
 }
 
 - (void)removeDeviceOrientationObserver {
+    self.activeDeviceObserver = NO;
     if (![UIDevice currentDevice].generatesDeviceOrientationNotifications) {
         [[UIDevice currentDevice] endGeneratingDeviceOrientationNotifications];
     }
@@ -229,9 +235,7 @@
 - (ZFLandscapeRotationManager *)landscapeRotationManager {
     if (!_landscapeRotationManager) {
         if (@available(iOS 16.0, *)) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 160000
             _landscapeRotationManager = [[ZFLandscapeRotationManager_iOS16 alloc] init];
-#endif
         } else {
             _landscapeRotationManager = [[ZFLandscapeRotationManager_iOS15 alloc] init];
         }
@@ -351,6 +355,11 @@
 - (void)setSupportInterfaceOrientation:(ZFInterfaceOrientationMask)supportInterfaceOrientation {
     _supportInterfaceOrientation = supportInterfaceOrientation;
     self.landscapeRotationManager.supportInterfaceOrientation = supportInterfaceOrientation;
+}
+
+- (void)setActiveDeviceObserver:(BOOL)activeDeviceObserver {
+    _activeDeviceObserver = activeDeviceObserver;
+    self.landscapeRotationManager.activeDeviceObserver = activeDeviceObserver;
 }
 
 @end

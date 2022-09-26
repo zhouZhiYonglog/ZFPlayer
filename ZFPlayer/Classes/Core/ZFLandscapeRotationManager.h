@@ -60,6 +60,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, readonly, nullable) ZFLandscapeViewController *landscapeViewController;
 
+/// current device orientation observer is activie.
+@property (nonatomic, assign) BOOL activeDeviceObserver;
+
 - (void)interfaceOrientation:(UIInterfaceOrientation)orientation completion:(void(^ __nullable)(void))completion;
 
 - (void)rotateToOrientation:(UIInterfaceOrientation)orientation animated:(BOOL)animated;
@@ -73,6 +76,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// update the rotateView and containerView.
 - (void)updateRotateView:(ZFPlayerView *)rotateView
            containerView:(UIView *)containerView;
+
+- (BOOL)isSuppprtInterfaceOrientation:(UIInterfaceOrientation)orientation;
 
 + (ZFInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window;
 

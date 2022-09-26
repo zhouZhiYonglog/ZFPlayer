@@ -33,28 +33,16 @@
     [self.view addSubview:_playerSuperview];
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
-    return UIInterfaceOrientationPortrait;
-}
-
 - (BOOL)shouldAutorotate {
     return [self.delegate ls_shouldAutorotate];
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations {
-    UIInterfaceOrientation currentOrientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
-    if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
-        return UIInterfaceOrientationMaskLandscape;
-    }
-    return UIInterfaceOrientationMaskAll;
+    return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
 - (BOOL)prefersHomeIndicatorAutoHidden {
-    UIInterfaceOrientation currentOrientation = (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
-    if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
-        return YES;
-    }
-    return NO;
+    return YES;
 }
 
 @end
