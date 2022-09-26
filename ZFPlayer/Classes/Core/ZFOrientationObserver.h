@@ -124,6 +124,10 @@ typedef NS_OPTIONS(NSUInteger, ZFDisablePortraitGestureTypes) {
 /// default is ZFDisablePortraitGestureTypesAll.
 @property (nonatomic, assign) ZFDisablePortraitGestureTypes disablePortraitGestureTypes;
 
+/// The current orientation of the player.
+/// Default is UIInterfaceOrientationPortrait.
+@property (nonatomic, readonly) UIInterfaceOrientation currentOrientation;
+
 /// Whether allow the video orientation rotate.
 /// default is YES.
 @property (nonatomic, assign) BOOL allowOrientationRotation;

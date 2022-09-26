@@ -40,27 +40,9 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     self.player.controlView = self.controlView;
     self.player.orientationObserver.supportInterfaceOrientation = ZFInterfaceOrientationMaskLandscape;
     
-    UIInterfaceOrientation rotationOrientation = UIInterfaceOrientationLandscapeRight;
-    UIInterfaceOrientation currentOrientation = [self getCurrentOrientation];
-    if (UIInterfaceOrientationIsLandscape(currentOrientation)) {
-        rotationOrientation = currentOrientation;
-    }
-    /// 根据设备方向转屏
-    [self.player rotateToOrientation:rotationOrientation animated:NO completion:nil];
+    /// 设置转屏方向
+    [self.player rotateToOrientation:UIInterfaceOrientationLandscapeRight animated:NO completion:nil];
     playerManager.assetURL = [NSURL URLWithString:@"https://www.apple.com/105/media/us/iphone-x/2017/01df5b43-28e4-4848-bf20-490c34a926a7/films/feature/iphone-x-feature-tpl-cc-us-20170912_1280x720h.mp4"];
-}
-
-
-- (UIInterfaceOrientation)getCurrentOrientation {
-    if (@available(iOS 16.0, *)) {
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 160000
-        NSArray *array = [[[UIApplication sharedApplication] connectedScenes] allObjects];
-        UIWindowScene *scene = [array firstObject];
-        return scene.interfaceOrientation;
-#endif
-    } else {
-        return (UIInterfaceOrientation)[UIDevice currentDevice].orientation;
-    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
