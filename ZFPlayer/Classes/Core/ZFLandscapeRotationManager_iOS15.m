@@ -88,9 +88,9 @@
             return NO;
         }
     }
+    if (self.forceRotaion) { return YES; }
     if (!self.activeDeviceObserver) { return NO; }
     if (self.allowOrientationRotation && !self.isLockedScreen) { return YES; }
-    if (self.forceRotaion) { return YES; }
     return NO;
 }
 

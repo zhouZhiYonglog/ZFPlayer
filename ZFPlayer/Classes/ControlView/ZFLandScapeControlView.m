@@ -276,6 +276,7 @@
     self.topToolView.alpha           = 1;
     self.bottomToolView.alpha        = 1;
     self.isShow                      = NO;
+    self.lockBtn.selected            = self.player.isLockedScreen;
 }
 
 - (void)showControlView {

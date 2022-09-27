@@ -106,11 +106,13 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
     
     @zf_weakify(self)
     self.player.orientationDidChanged = ^(ZFPlayerController * _Nonnull player, BOOL isFullScreen) {
-        @zf_strongify(self)
-        [UIView animateWithDuration:0.0 animations:^{
-            [self setNeedsStatusBarAppearanceUpdate];
-            
-        }];
+        /* // 使用YYTextView转屏失败
+        for (UIWindow *window in [UIApplication sharedApplication].windows) {
+            if ([window isKindOfClass:NSClassFromString(@"YYTextEffectWindow")]) {
+                window.hidden = isFullScreen;
+            }
+        }
+        */
     };
     /// 播放完成
     self.player.playerDidToEnd = ^(id  _Nonnull asset) {

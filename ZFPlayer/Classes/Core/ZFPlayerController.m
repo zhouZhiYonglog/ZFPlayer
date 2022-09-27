@@ -528,6 +528,7 @@ static NSMutableDictionary <NSString* ,NSNumber *> *_zfPlayRecords;
         [self.currentPlayerManager stop];
         [self.currentPlayerManager.view removeFromSuperview];
     }
+    self.lockedScreen = NO;
     if (self.scrollView) self.scrollView.zf_stopPlay = YES;
     [self.notification removeNotification];
     [self.orientationObserver removeDeviceOrientationObserver];
