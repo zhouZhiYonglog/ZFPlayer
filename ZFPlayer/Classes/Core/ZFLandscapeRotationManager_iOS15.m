@@ -123,31 +123,39 @@
         [CATransaction begin];
         [CATransaction setDisableActions:YES];
     }
-    @zf_weakify(self)
-    [coordinator animateAlongsideTransition:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
-        @zf_strongify(self)
+    [UIView animateWithDuration:0.3 animations:^{
         if (UIInterfaceOrientationIsLandscape(toOrientation)) {
             playerSuperview.frame = CGRectMake(0, 0, size.width, size.height);
         } else {
             playerSuperview.frame = [self.containerView convertRect:self.containerView.bounds toView:self.containerView.window];
         }
         [self.contentView layoutIfNeeded];
-    } completion:^(id<UIViewControllerTransitionCoordinatorContext> _Nonnull context) {
-        @zf_strongify(self)
+    } completion:^(BOOL finished) {
         if (self.disableAnimations) {
             [CATransaction commit];
         }
         self.forceRotaion = NO;
-        self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
         if (toOrientation == UIInterfaceOrientationPortrait) {
-            [self.containerView addSubview:self.contentView];
-            self.contentView.frame = self.containerView.bounds;
+            UIView *snapshot = [self.contentView snapshotViewAfterScreenUpdates:NO];
+            snapshot.frame = self.containerView.bounds;
+            snapshot.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            [self.containerView addSubview:snapshot];
+            [UIView animateWithDuration:0.0 animations:^{} completion:^(BOOL finished) {
+                self.contentView.frame = self.containerView.bounds;
+                self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                [self.containerView addSubview:self.contentView];
+                [self.contentView layoutIfNeeded];
+                [snapshot removeFromSuperview];
+                [self rotationEnd];
+                if (self.orientationDidChanged) self.orientationDidChanged(toOrientation);
+            }];
         } else {
+            self.contentView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
             self.contentView.frame = self.window.bounds;
+            [self.contentView layoutIfNeeded];
+            [self rotationEnd];
+            if (self.orientationDidChanged) self.orientationDidChanged(toOrientation);
         }
-        [self.contentView layoutIfNeeded];
-        [self rotationEnd];
-        if (self.orientationDidChanged) self.orientationDidChanged(toOrientation);
     }];
 }
 

@@ -196,6 +196,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         _controlView.autoFadeTimeInterval = 0.5;
         _controlView.prepareShowLoading = YES;
         _controlView.prepareShowControlView = NO;
+        _controlView.showCustomStatusBar = YES;
     }
     return _controlView;
 }

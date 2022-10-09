@@ -75,6 +75,7 @@ static NSString *kVideoCover = @"https://upload-images.jianshu.io/upload_images/
         _controlView.fastViewAnimated = YES;
         _controlView.effectViewShow = NO;
         _controlView.prepareShowLoading = YES;
+        _controlView.showCustomStatusBar = YES;
     }
     return _controlView;
 }

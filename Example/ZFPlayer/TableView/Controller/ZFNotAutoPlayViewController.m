@@ -211,6 +211,7 @@ static NSString *kIdentifier = @"kIdentifier";
         _controlView = [ZFPlayerControlView new];
         _controlView.prepareShowLoading = YES;
         _controlView.prepareShowControlView = YES;
+        _controlView.showCustomStatusBar = YES;
     }
     return _controlView;
 }
