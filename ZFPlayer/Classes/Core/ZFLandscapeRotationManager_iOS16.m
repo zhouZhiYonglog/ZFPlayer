@@ -127,6 +127,11 @@
     }];
 }
 
+
+- (UIView *)fullScreenContainerView {
+    return self.landscapeViewController.view;
+}
+
 - (UIInterfaceOrientationMask)supportedInterfaceOrientationsForWindow:(nullable UIWindow *)window {
     if (window == self.window) {
         return 1 << self.currentOrientation;

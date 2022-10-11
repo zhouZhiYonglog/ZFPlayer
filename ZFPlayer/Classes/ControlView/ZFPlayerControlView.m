@@ -432,6 +432,10 @@
     }
 }
 
+- (void)longPressed:(ZFPlayerGestureControl *)gestureControl state:(ZFLongPressGestureRecognizerState)state {
+    
+}
+
 /// 准备播放
 - (void)videoPlayer:(ZFPlayerController *)videoPlayer prepareToPlay:(NSURL *)assetURL {
     [self hideControlViewWithAnimated:NO];

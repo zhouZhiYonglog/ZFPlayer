@@ -1056,6 +1056,13 @@ static NSMutableDictionary <NSString* ,NSNumber *> *_zfPlayRecords;
                 [self.controlView gesturePinched:control scale:scale];
             }
         };
+        
+        gestureControl.longPressed = ^(ZFPlayerGestureControl * _Nonnull control, ZFLongPressGestureRecognizerState state) {
+            @zf_strongify(self)
+            if ([self.controlView respondsToSelector:@selector(longPressed:state:)]) {
+                [self.controlView longPressed:control state:state];
+            }
+        };
         objc_setAssociatedObject(self, _cmd, gestureControl, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     }
     return gestureControl;
