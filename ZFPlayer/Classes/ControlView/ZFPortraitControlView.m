@@ -46,10 +46,14 @@
 @property (nonatomic, strong) ZFSliderView *slider;
 /// 视频总时间
 @property (nonatomic, strong) UILabel *totalTimeLabel;
+@property (nonatomic, assign) BOOL isShow;
 /// 全屏按钮
 @property (nonatomic, strong) UIButton *fullScreenBtn;
+///倍速按钮
+@property (nonatomic, strong) UIButton *speedBtn;
+@property (nonatomic, strong) UIView *speedListView;
+@property(nonatomic, strong) NSArray<UIButton *> *speedButtons;
 
-@property (nonatomic, assign) BOOL isShow;
 
 @end
 
@@ -66,6 +70,7 @@
         [self.bottomToolView addSubview:self.slider];
         [self.bottomToolView addSubview:self.totalTimeLabel];
         [self.bottomToolView addSubview:self.fullScreenBtn];
+        [self.bottomToolView addSubview:self.speedBtn];
         
         // 设置子控件的响应事件
         [self makeSubViewsAction];
@@ -98,6 +103,8 @@
     min_w = min_view_w - min_x - 15;
     min_h = 30;
     self.titleLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    self.titleLabel.hidden = YES;
+//    self.titleLabel.backgroundColor = [UIColor redColor];
     
     min_h = 40;
     min_x = 0;
@@ -113,24 +120,35 @@
     self.playOrPauseBtn.center = self.center;
     
     min_x = min_margin;
-    min_w = 62;
+    min_w = 50;
     min_h = 28;
     min_y = (self.bottomToolView.zf_height - min_h)/2;
     self.currentTimeLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
+//    self.currentTimeLabel.backgroundColor = [UIColor redColor];
     
     min_w = 28;
-    min_h = min_w;
+    min_h = 30;
     min_x = self.bottomToolView.zf_width - min_w - min_margin;
     min_y = 0;
     self.fullScreenBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.fullScreenBtn.zf_centerY = self.currentTimeLabel.zf_centerY;
+//    self.fullScreenBtn.backgroundColor = [UIColor redColor];
     
-    min_w = 62;
-    min_h = 28;
+    min_w = 42;
+    min_h = 18;
     min_x = self.fullScreenBtn.zf_left - min_w - 4;
+    min_y = 0;
+    self.speedBtn.frame = CGRectMake(min_x, min_y, min_w, min_h);
+    self.speedBtn.zf_centerY = self.currentTimeLabel.zf_centerY;
+//    self.speedBtn.backgroundColor = [UIColor redColor];
+    
+    min_w = 50;
+    min_h = 28;
+    min_x = self.speedBtn.zf_left - min_w - 4;
     min_y = 0;
     self.totalTimeLabel.frame = CGRectMake(min_x, min_y, min_w, min_h);
     self.totalTimeLabel.zf_centerY = self.currentTimeLabel.zf_centerY;
+//    self.totalTimeLabel.backgroundColor = [UIColor redColor];
     
     min_x = self.currentTimeLabel.zf_right + 4;
     min_y = 0;
@@ -153,6 +171,7 @@
 - (void)makeSubViewsAction {
     [self.playOrPauseBtn addTarget:self action:@selector(playPauseButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
     [self.fullScreenBtn addTarget:self action:@selector(fullScreenButtonClickAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.speedBtn addTarget:self action:@selector(speedBtnClickAction:) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - action
@@ -162,11 +181,65 @@
 }
 
 - (void)fullScreenButtonClickAction:(UIButton *)sender {
+    self.speedListView.hidden = YES;
     [self.player enterFullScreen:YES animated:YES];
+}
+
+- (void)speedBtnClickAction:(UIButton *)sender {
+    if (self.speedListView) {
+        self.speedListView.hidden = !self.speedListView.hidden;
+        return;
+    }
+    self.speedListView = [[UIView alloc] initWithFrame:CGRectMake(ZFPlayerScreenWidth - 83, (200 - 72 - 35), 42, 72)];
+    self.speedListView.backgroundColor = [[UIColor blackColor] colorWithAlphaComponent:0.3];
+    self.speedListView.layer.cornerRadius = 10;
+    self.speedListView.layer.borderWidth = 1;
+    self.speedListView.layer.borderColor = [[UIColor whiteColor] colorWithAlphaComponent:0.3].CGColor;
+    [self addSubview:self.speedListView];
+    [self bringSubviewToFront:self.speedListView];
+    
+    NSArray *speeds = @[@"1x", @"1.5x", @"2x", @"3x"];
+    NSMutableArray *buttons = [NSMutableArray array];
+    
+    for (int i = 0; i < speeds.count; i++) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        button.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.0];
+        button.layer.masksToBounds = YES;
+        button.layer.cornerRadius = 10;
+        button.frame = CGRectMake(0, i * 18, 42, 18);
+        [button setTitle:speeds[i] forState:UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize:10.0f];
+        [button addTarget:self action:@selector(speedButtonSelected:) forControlEvents:UIControlEventTouchUpInside];
+        [self.speedListView addSubview:button];
+        [buttons addObject:button];
+        if (i == 0) {
+            button.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+        }
+    }
+    self.speedButtons = [buttons copy];
+}
+
+- (void)speedButtonSelected:(UIButton *)sender {
+    NSString *speedTitle = sender.titleLabel.text;
+    [self.speedBtn setTitle:speedTitle forState:UIControlStateNormal];
+    self.speedListView.hidden = YES;
+    
+    CGFloat speed = [speedTitle floatValue];
+    self.player.currentPlayerManager.rate = speed;
+    
+    for (UIButton *btn in self.speedButtons) {
+        if (self.player.currentPlayerManager.rate == [btn.titleLabel.text floatValue]) {
+            btn.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+        }else {
+            btn.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.0];
+        }
+    }
 }
 
 /// 根据当前播放状态取反
 - (void)playOrPause {
+    self.speedListView.hidden = YES;
     self.playOrPauseBtn.selected = !self.playOrPauseBtn.isSelected;
     self.playOrPauseBtn.isSelected? [self.player.currentPlayerManager play]: [self.player.currentPlayerManager pause];
 }
@@ -203,6 +276,7 @@
 }
 
 - (void)sliderValueChanged:(float)value {
+    self.speedListView.hidden = YES;
     if (self.player.totalTime == 0) {
         self.slider.value = 0;
         return;
@@ -241,6 +315,7 @@
     self.bottomToolView.zf_y         = self.zf_height - self.bottomToolView.zf_height;
     self.playOrPauseBtn.alpha        = 1;
     self.player.statusBarHidden      = NO;
+    self.speedListView.hidden = YES;
 }
 
 - (void)hideControlView {
@@ -251,6 +326,7 @@
     self.playOrPauseBtn.alpha        = 0;
     self.topToolView.alpha           = 0;
     self.bottomToolView.alpha        = 0;
+    self.speedListView.hidden = YES;
 }
 
 - (BOOL)shouldResponseGestureWithPoint:(CGPoint)point withGestureType:(ZFPlayerGestureType)type touch:(nonnull UITouch *)touch {
@@ -282,6 +358,7 @@
 
 /// 调节播放进度slider和当前时间更新
 - (void)sliderValueChanged:(CGFloat)value currentTimeString:(NSString *)timeString {
+    self.speedListView.hidden = YES;
     self.slider.value = value;
     self.currentTimeLabel.text = timeString;
     self.slider.isdragging = YES;
@@ -382,6 +459,18 @@
         [_fullScreenBtn setImage:ZFPlayer_Image(@"ZFPlayer_fullscreen") forState:UIControlStateNormal];
     }
     return _fullScreenBtn;
+}
+
+- (UIButton *)speedBtn {
+    if (!_speedBtn) {
+        _speedBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_speedBtn setTitle:@"1x" forState:UIControlStateNormal];
+        _speedBtn.titleLabel.font = [UIFont systemFontOfSize:14.0f];
+        _speedBtn.backgroundColor = [[UIColor whiteColor] colorWithAlphaComponent:0.2];
+        _speedBtn.layer.masksToBounds = YES;
+        _speedBtn.layer.cornerRadius = 10;
+    }
+    return _speedBtn;
 }
 
 @end
