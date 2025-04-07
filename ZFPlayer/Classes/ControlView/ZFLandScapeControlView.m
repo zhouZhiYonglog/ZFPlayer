@@ -114,7 +114,7 @@
     min_x = (iPhoneX && UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation)) ? 44: 15;
     if (@available(iOS 13.0, *)) {
         if (self.showCustomStatusBar) {
-            min_y = self.statusBarView.zf_bottom;
+            min_y = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? self.statusBarView.zf_bottom : (iPhoneX ? 40 : 20);
         } else {
             min_y = UIInterfaceOrientationIsLandscape([UIApplication sharedApplication].statusBarOrientation) ? 10 : (iPhoneX ? 40 : 20);
         }
