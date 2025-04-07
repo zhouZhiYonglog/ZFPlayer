@@ -142,7 +142,7 @@
     self.speedBtn.zf_centerY = self.currentTimeLabel.zf_centerY;
 //    self.speedBtn.backgroundColor = [UIColor redColor];
     
-    min_w = 50;
+    min_w = 55;
     min_h = 28;
     min_x = self.speedBtn.zf_left - min_w - 4;
     min_y = 0;
